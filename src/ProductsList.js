@@ -149,6 +149,9 @@ const ProductListingComponent = styled.div`
         display: ${props=>props.displayFilters?'grid': 'none'};
         left: 0;
         top: 20%;
+        width: 50%;
+        place-items: center;
+        height: 80dvh;
         // opacity: 0;
         border-right: 1px solid #ddd;
         border-top: 1px solid #ddd;

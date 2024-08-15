@@ -65,6 +65,9 @@ const ProductListingComponent = styled.div`
  display: flex;
  width: 100%;
 }
+.res__filter{
+ display: none;
+}
  .product__filter__section{
   width: 30%;
   background: #fff;
@@ -144,6 +147,9 @@ const ProductListingComponent = styled.div`
       .product-item{
        width: ${props => props.displayProducts === "grid" ? '' : '100%'};
        }
+       .res__filter{
+        display: block;
+       }
        .product__filter__section{
         position: absolute;
         display: ${props=>props.displayFilters?'grid': 'none'};
@@ -151,7 +157,6 @@ const ProductListingComponent = styled.div`
         top: 20%;
         width: 50%;
         place-items: center;
-        height: 80dvh;
         // opacity: 0;
         border-right: 1px solid #ddd;
         border-top: 1px solid #ddd;
@@ -267,7 +272,7 @@ const ProductListing = () => {
                 </div>
                 <div className='product__lists'>
                     <div className='product__header'>
-                    <FilterAltIcon style={{color: 'blue'}} fontSize='large' onClick={()=>setDisplayFilters(true)}/>
+                    <FilterAltIcon className='res__filter' style={{color: 'blue'}} fontSize='large' onClick={()=>setDisplayFilters(true)}/>
                         <h2>Products({filteredProducts.length})</h2>
                         <div>
                             Sort by

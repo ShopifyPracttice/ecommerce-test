@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 import styled from 'styled-components';
@@ -144,6 +144,17 @@ const ProductListingComponent = styled.div`
       .product-item{
        width: ${props => props.displayProducts === "grid" ? '' : '100%'};
        }
+       .product__filter__section{
+        position: absolute;
+        display: ${props=>props.displayFilters?'grid': 'none'};
+        left: 0;
+        top: 20%;
+        // opacity: 0;
+        border-right: 1px solid #ddd;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        paddding:20px;
+       }
       }
 `
 const ProductListing = () => {
@@ -154,6 +165,8 @@ const ProductListing = () => {
     const [sortOption, setSortOption] = useState('');
     const [displayProducts, setDisplayProducts] = useState('flex');
     const [selectedCategories, setSelectedCategories] = useState([]);
+    const [displayFilters, setDisplayFilters] = useState(false);
+    const filterRef = useRef(null);
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -169,6 +182,17 @@ const ProductListing = () => {
         };
 
         fetchProducts();
+    }, []);
+    const handleClickOutside = (event) => {
+        if (filterRef.current && !filterRef.current.contains(event.target)) {
+            setDisplayFilters(false); // Close the filter section
+        }
+    };
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
     const sortProducts = (option) => {
         let sortedProducts = [...products];
@@ -206,7 +230,7 @@ const ProductListing = () => {
         (selectedCategories.length === 0 || selectedCategories.includes(product.category))
     );
     return (
-        <ProductListingComponent displayProducts={displayProducts}>
+        <ProductListingComponent displayProducts={displayProducts} displayFilters={displayFilters}>
             <div className='products__search__section'>
                 <div className='search__div'>
                     <div className='search'>
@@ -222,7 +246,7 @@ const ProductListing = () => {
                 </div>
             </div>
             <div className='products__section'>
-                <div className='product__filter__section'>
+                <div ref={filterRef} className='product__filter__section'>
                     <h2><FilterAltIcon fontSize='large' /> Filter</h2>
                     <div>
                         {uniqueCategories.map((category, index) => (
@@ -240,6 +264,7 @@ const ProductListing = () => {
                 </div>
                 <div className='product__lists'>
                     <div className='product__header'>
+                    <FilterAltIcon style={{color: 'blue'}} fontSize='large' onClick={()=>setDisplayFilters(true)}/>
                         <h2>Products({filteredProducts.length})</h2>
                         <div>
                             Sort by

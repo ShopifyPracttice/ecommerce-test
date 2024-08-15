@@ -117,6 +117,7 @@ const ProductListingComponent = styled.div`
       line-height: 1.2;
      }
     img{
+    width: ${props => props.displayProducts === "grid" ? '' : '100%'};
      height: 200px;
      object-fit: contain;
     }
